@@ -1,0 +1,63 @@
+<snippet>
+	<content><![CDATA[
+ll int ccw (pair<ll int,ll int> P0, pair <ll int,ll int> P1, pair <ll int,ll int> P2) {
+    ll int dx1 = P1.first - P0.first;
+    ll int dx2 = P2.first - P0.first;
+    ll int dy1 = P1.second - P0.second;
+    ll int dy2 = P2.second - P0.second;
+
+    if (dy1 * dx2 > dy2 * dx1) return -1;
+    if (dx1 * dy2 > dy1 * dx2) return 1;
+    if ((dx1 * dx2 < 0) || (dy1 * dy2 < 0)) return 1;
+    if ((dx1 * dx1 + dy1 * dy1) < (dx2 * dx2 + dy2 * dy2)) return -1;
+    return 0;
+}
+ll int dist2(pair<ll int,ll int> p1,pair<ll int,ll int> p2)
+{
+    return (p1.first-p2.first)*(p1.first-p2.first) + (p1.second-p2.second)*(p1.second-p2.second);
+}
+vector <pair<ll int,ll int>> convexHull(vector<pair<ll int,ll int>> points) {
+  sort(begin(points), end(points));
+  vector <pair<ll int,ll int>> hull;
+  hull.reserve(points.size() + 1);
+  for (int phase = 0; phase < 2; ++phase) {
+    auto start = hull.size();
+    for (auto& point : points) {
+      while (hull.size() >= start+2 &&
+             ccw(point, hull.back(), hull[hull.size()-2]) <= 0)
+        hull.pop_back();
+      hull.push_back(point);
+    }
+    hull.pop_back();
+    reverse(begin(points), end(points));
+  }
+  if (hull.size() == 2 && hull[0] == hull[1]) hull.pop_back();
+  return hull;
+}
+ll int next(ll int j,ll int n)
+{
+    if (j==n-1)
+        return 0;
+    else
+        return j+1;
+}
+ll int cw(pair<ll int,ll int> p1,pair <ll int,ll int> p2)
+{
+    return p1.first*p2.second-p1.second*p2.first;
+}
+ll int maxDist2(vector <pair<ll int,ll int>> poly) {
+  ll int n = static_cast<ll int>(poly.size());
+  ll int res = (ll int)0;
+  for (int i = 0, j = n < 2 ? 0 : 1; i < j; ++i)
+    for (;; j = next(j, n)) {
+      res = max(res, dist2(poly[i], poly[j]));
+      if (cw({poly[i+1].first - poly[i].first,poly[i+1].second-poly[i].second}, {poly[next(j, n)].first - poly[j].first,poly[next(j, n)].second - poly[j].second}) >= 0) break;
+    }
+  return res;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>convexhull</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

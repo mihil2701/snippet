@@ -1,0 +1,118 @@
+<snippet>
+	<content><![CDATA[
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+#define ll          long long
+#define pb          push_back
+#define    endl        '\n'
+#define pii         pair<ll int ,ll int >
+#define vi          vector<ll ll int >
+#define all(a)      (a).begin(),(a).end()
+#define F           first
+#define S           second
+#define sz(x)       (ll ll int )x.sz()
+#define hell        998244353
+#define rep(i,a,b)    for(ll int  i=a;i<b;i++)
+#define repr(i,a,b)    for(ll int  i=a;i>b;i--)
+#define lbnd        lower_bound
+#define ubnd        upper_bound
+#define bs          binary_search
+#define mp          make_pair
+#define ordered_set tree<ll int , null_type,less<ll int >, rb_tree_tag,tree_order_statistics_node_update> 
+#define MAXN        100001
+#define MAXLEVEL    35
+using namespace std;
+
+vector <ll int> adj[MAXN];
+vector <ll int> cost[MAXN];
+ll int level[MAXN],subseg[MAXN];
+ll int p[MAXN][MAXLEVEL];
+ll int chainNo,ptr;
+ll int chainInd[MAXN], chainHead[MAXN], posInBase[MAXN];
+ll int baseArray[MAXN];
+ll int st[MAXN*6],qt[MAXN*6];
+
+void init()
+{
+    level[1]=0;
+    chainNo=0;
+    ptr=0;
+    rep(i,0,MAXN)
+    {
+        chainHead[i]=-1;
+        adj[i].clear();
+        cost[i].clear();
+    }
+}
+
+void dfs(ll int v,ll int prev)
+{
+    subseg[v]=1;
+    for (auto i: adj[v])
+    {
+        if (i==prev) continue;
+        level[i]=level[v]+1;
+        p[i][0]=v;
+        dfs(i,v);
+        subseg[v]=subseg[v]+subseg[i];
+    }
+}
+
+void preprocess()
+{
+    rep(i,1,MAXN)
+    {
+        rep(j,1,MAXLEVEL)
+        {
+            p[i][j]=-1;
+        }
+    }
+    rep(j,1,MAXLEVEL)
+    {
+        rep(i,1,MAXN)
+        {
+            if (p[i][j-1]!=-1)
+                p[i][j]=p[p[i][j-1]][j-1];
+        }
+    }
+}
+
+void findnparent(ll int u,ll int dist)
+{
+    while(dist!=0)
+    {
+        ll int f=log2(dist);
+        u=p[u][f];
+        dist=dist-(1<<f);
+    }
+}
+
+ll int lca(ll int u,ll int v)
+{
+    if(level[u]<level[v]) swap(u,v);
+    ll int diff=level[u]-level[v];
+    u=findnparent(u,diff);
+    if (u==v)
+        return u;
+    repr(i,MAXLEVEL-1,-1)
+    {
+        if (p[u][i]!=-1 and p[u][i]!=p[v][i])
+        {
+            u=p[u][i];
+            v=p[v][i];
+        }
+    }
+    return p[u][0];
+}
+
+
+
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>hld_lca</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

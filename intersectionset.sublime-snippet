@@ -1,0 +1,36 @@
+<snippet>
+	<content><![CDATA[
+vector <pair<ll int,ll int>> imerg(vector <pair<ll int,ll int>> s2,vector <pair<ll int,ll int>> s3)
+{
+	vector <pair<ll int,ll int>> merged;
+	vector <pair<ll int,ll int>> ans;
+	ll int i=0;
+	ll int j=0;
+	while(i<s2.size() and j<s3.size())
+	{
+		if (s2[i].first>s3[j].second)
+		{
+			j++;
+			continue;
+		}
+		if (s2[i].second<s3[j].first)
+		{
+			i++;
+			continue;
+		}
+		ll int e1=max(s2[i].first,s3[j].first);
+		ll int e2=min(s2[i].second,s3[j].second);
+		ans.push_back({e1,e2});
+		if (s2[i].second<s3[j].second)
+			i++;
+		else
+			j++;
+	}
+	return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>intersectionset</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

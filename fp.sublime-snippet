@@ -1,0 +1,19 @@
+<snippet>
+	<content><![CDATA[
+long long int power(long long int x, long long int y)
+{
+    long long int temp;
+    if( y == 0)
+        return 1;
+    temp = power(x, y/2);
+    if (y%2 == 0)
+        return (temp*temp)%inf;
+    else
+        return (((x*temp)%inf)*temp)%inf;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>fp</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

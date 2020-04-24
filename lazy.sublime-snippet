@@ -1,0 +1,94 @@
+<snippet>
+	<content><![CDATA[
+int tree1[6*MAXN];
+int lazy[6*MAXN];
+int s[MAXN];
+int n;
+void init(int n)
+{
+	rep(i,0,6*n+1)
+	{
+		tree1[i]=0;
+		lazy[i]=0;
+	}
+}
+void build(int node, int start, int end)
+{
+    if(start == end)
+    {
+        // Leaf node will have a single element
+        tree1[node] = s[start];
+    }
+    else
+    {
+        int mid = (start + end) / 2;
+        // Recurse on the left child
+        build(2*node, start, mid);
+        // Recurse on the right child
+        build(2*node+1, mid+1, end);
+        // Internal node will have the sum of both of its children
+        tree1[node] = min(tree1[2*node],tree1[2*node+1]);
+    }
+}
+void updateRange(int node, int start, int end, int l, int r, int val)
+{
+	if (l>r) return;
+    if(lazy[node] != 0)
+    { 
+        // This node needs to be updated
+        tree1[node] = tree1[node]-lazy[node];    // Update it
+        if(start != end)
+        {
+            lazy[node*2] += lazy[node];                  // Mark child as lazy
+            lazy[node*2+1] += lazy[node];                // Mark child as lazy
+        }
+        lazy[node] = 0;                                  // Reset it
+    }
+    if(start > end or start > r or end < l)              // Current segment is not within range [l, r]
+        return;
+    if(start >= l and end <= r)
+    {
+        // Segment is fully within range
+        tree1[node] = tree1[node]-val;
+        if(start != end)
+        {
+            // Not leaf node
+            lazy[node*2] += val;
+            lazy[node*2+1] += val;
+        }
+        return;
+    }
+    int mid = (start + end) / 2;
+    updateRange(node*2, start, mid, l, r, val);        // Updating left child
+    updateRange(node*2 + 1, mid + 1, end, l, r, val);   // Updating right child
+    tree1[node] = min(tree1[node*2],tree1[node*2+1]);        // Updating root with max value 
+}
+
+int queryRange(int node, int start, int end, int l, int r)
+{
+    if(start > end or start > r or end < l)
+        return hell;         // Out of range
+    if(lazy[node] != 0)
+    {
+        // This node needs to be updated
+        tree1[node] = tree1[node]-lazy[node];            // Update it
+        if(start != end)
+        {
+            lazy[node*2] += lazy[node];         // Mark child as lazy
+            lazy[node*2+1] += lazy[node];    // Mark child as lazy
+        }
+        lazy[node] = 0;                 // Reset it
+    }
+    if(start >= l and end <= r)             // Current segment is totally within range [l, r]
+        return tree1[node];
+    int mid = (start + end) / 2;
+    int p1 = queryRange(node*2, start, mid, l, r);         // Query left child
+    int p2 = queryRange(node*2 + 1, mid + 1, end, l, r); // Query right child
+    return min(p1,p2);
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>lazy</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

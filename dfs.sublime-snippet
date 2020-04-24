@@ -1,0 +1,14 @@
+<snippet>
+	<content>
+void solve(long long int v,long long int prev=0)
+{
+	rep(i,0,sz(adj[v]))
+	{
+		if (adj[v][i]==prev)
+			continue;
+		solve(adj[v][i],v);
+	}
+}
+	</content>
+<tabTrigger>dfs</tabTrigger>
+</snippet>

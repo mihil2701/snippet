@@ -1,0 +1,31 @@
+<snippet>
+	<content><![CDATA[
+ll int gerparent(ll int child)
+{
+	if(parent[child]==child) return child;
+	else
+	{
+		ll int temp=gerparent(parent[child]);
+		parent[child]=temp;
+		return temp;
+	}
+}
+long long int A1=gerparent(a1);
+long long int A2=gerparent(a2);
+if (A1!=A2)
+{
+    if (A1>A2)
+    {
+        parent[A2]=A1;
+    }
+    else
+    {
+        parent[A1]=A2;
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dsu</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

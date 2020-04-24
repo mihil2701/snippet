@@ -1,0 +1,82 @@
+<snippet>
+	<content><![CDATA[
+#define MAX         100001
+long long int trie[MAX][26][2]={-1};
+long long int cind=0;
+long long int nind=0;
+void initialize()
+{
+	rep(i,0,MAX)
+	{
+		rep(j,0,26)
+			trie[i][j][0]=-1,trie[i][j][1]=0;
+	}
+}
+void insert(string s)
+{
+	long long int s1=s.length();
+	ll int i=0;
+	while(i<s1)
+	{
+		if (trie[cind][s[i]-'a'][0]==-1)
+		{
+			nind++;
+			trie[cind][s[i]-'a'][0]=nind;
+			cind=nind;
+		}
+		else
+		{
+			cind=trie[cind][s[i]-'a'][0];
+		}
+		i++;
+	}
+	trie[cind][s[s1-1]-'a'][1]=1;
+}
+bool search(string s)
+{
+	long long int s1=s.length();
+	ll int i=0;
+	while(i<s1)
+	{
+		if (trie[cind][s[i]-'a'][0]==-1)
+		{
+			return false;
+		}
+		else
+		{
+			cind=trie[cind][s[i]-'a'][0];
+		}
+		i++;
+	}
+	if (trie[cind][s[s1-1]-'a'][1]==1)
+		return true;
+	else
+		return false;
+}
+int main()
+{
+	initialize();
+	long long int n,m;
+	cin >> n;
+	rep(i,0,n)
+	{
+		string s;
+		cin >> s;
+		cind=0;
+		insert(s);
+	}
+	cin >> m;
+	rep(i,0,m)
+	{
+		string s;
+		cin >> s;
+		cind=0;
+		cout << search(s) << endl;
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>triestring</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,54 @@
+<snippet>
+	<content><![CDATA[
+//FENVICK TREE DYNAMMIC CUMMULATIVE EVALUATION
+ll int f[MAX];
+void initialize()
+{
+	rep(i,0,MAX)
+	{
+		f[i]=0;
+	}
+}
+ll int lo(ll int x)
+{
+	return (x & (-x));
+}
+ll int res(ll int b)
+{
+	ll int sum1=0;
+	for (b;b>0;b=b-lo(b))sum1=sum1+f[b];
+	return sum1;
+}
+void adjust(ll int k,ll int v)
+{
+	for (k;k<MAX;k=k+lo(k))
+	{
+		f[k]=f[k]+v;
+	}
+}
+int main()
+{
+	ll int n;
+	cin >> n;
+	ll int a[n];
+	rep(i,0,n)
+	{
+		cin >> a[i];
+	}
+	rep(i,0,n)
+	{
+		adjust(a[i],1);
+	}
+	ll int m;
+	cin >> m;
+	rep(i,0,m)
+	{
+		
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>fenwick</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,14 @@
+<snippet>
+	<content>
+def ncr(c,r):
+	r=max(r,c-r)
+	numerator=1
+	denominator=1
+	for i in range(r+1,c+1):
+		numerator=numerator*i
+	for i in range(1,c-r+1):
+		denominator=denominator*i
+	return numerator//denominator	
+	</content>
+	<tabTrigger>ncr</tabTrigger>
+</snippet>

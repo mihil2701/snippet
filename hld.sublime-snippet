@@ -1,0 +1,102 @@
+<snippet>
+	<content><![CDATA[
+void HLD(ll int curr,ll int value,ll int prev)
+{
+    if(chainHead[chainNo]==-1) chainHead[chainNo]=curr;
+    chainInd[curr]=chainNo;
+    posInBase[curr]=ptr;
+    baseArray[ptr++]=value;
+    ll int ind=-1;
+    ll int maxv=-1;
+    ll int ncost=-1;
+    rep(i,0,adj[curr].size())
+    {
+        if (adj[curr][i]==prev) continue;
+        if (subseg[adj[curr][i]] > maxv)
+        {
+            ind=adj[curr][i];
+            maxv=subseg[adj[curr][i]]
+            ncost=cost[curr][i];
+        }
+    }
+    if (ind!=-1)
+    {
+        HLD(ind,ncost,curr);
+    }
+    rep(i,0,adj[curr].size())
+    {
+        if (adj[curr][i]!=prev and adj[curr][i]!=ind)
+        {
+            chainNo++;
+            HLD(adj[curr][i],cost[curr][i],curr);
+        }
+    }
+}
+
+void make_tree(ll int curr,ll int s,ll int e)
+{
+    if (s==e)
+    {
+        st[curr]=baseArray[s];
+    }
+    ll int mid=(s+e)/2;
+    make_tree(2*curr,s,mid);
+    make_tree(2*curr+1,mid+1,s);
+    st[curr]=max(st[2*curr],st[2*curr+1]);
+}
+
+void update_tree(ll int curr,ll int s,ll int e,ll int x,ll int v)
+{
+    if (x<s or x>e) return;
+    if (s==e and s==x) st[curr]=v;
+    ll int mid=(s+e)/2;
+    update_tree(2*curr,s,mid);
+    update_tree(2*curr+1,mid+1,s);
+    st[curr]=max(st[2*curr],st[2*curr+1]);
+}
+
+void query_tree(ll int curr,ll int s,ll int e,ll int S,ll int E)
+{
+    if (s>=S and e<=E) qt[curr]=st[curr];
+    if (E<s or S>e) qt[curr]=-1;
+    ll int mid=(s+e)/2;
+    query_tree(2*curr,s,mid,S,E);
+    query_tree(2*curr+1,s,mid,S,E);
+    qt[curr]=max(qt[2*curr],qt[2*curr+1]);
+}
+
+void query(ll int u,ll int v)
+{
+    ll int l=lca(u,v);
+    ll int c1=query_up(u,l);
+    ll int c2=query_up(v,l);
+    cout << max(c1,c2) << endl;
+}
+
+ll int query_up(ll int u,ll int v)
+{
+    ll int vchain=chainInd[v];
+    ll int ans=-1;
+    while(1)
+    {
+        ll int uchain=chainInd[u];
+        if (uchain==vchain)
+        {
+            if (u==v) break;
+            query_tree(1,0,ptr,posInBase[v]+1,posInBase[u]);
+            if (qt[1]>ans) ans=qt[1];
+            break;
+        }
+        query_tree(1,0,ptr,posInBase[chainHead[u]],posInBase[u]);
+        if (qt[1]>ans) ans=qt[1];
+        u=chainHead[u];
+        u=p[u][0];
+    }
+    return ans;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<!-- <tabTrigger>hello</tabTrigger> -->
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

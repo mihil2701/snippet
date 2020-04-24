@@ -1,0 +1,32 @@
+<snippet>
+	<content><![CDATA[
+long long int dfs1(long long int node, long long int count)
+{
+    vb[node] = 1;
+    count++;
+    for (auto i = adj1[node].begin(); i != adj1[node].end(); ++i) {
+        if (!vb[*i]) {
+            if (count > maxcount) {
+                maxcount = count;
+                x = *i;
+            }
+            dfs1(*i,count);
+        }
+    }
+    return x;
+} 
+long long int diameter(long long int n)
+{
+    long long int x=dfs1(n,0);
+    for (int i = 1; i < 300001; ++i)
+        vb[i] = 0;
+    dfs1(x,0);
+    return maxcount;
+}
+]]>
+	</content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>dia</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

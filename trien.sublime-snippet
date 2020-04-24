@@ -1,0 +1,102 @@
+<snippet>
+	<content><![CDATA[
+long long int trie[MAX][2]={-1};
+long long int tp[61];
+long long int cind=0;
+long long int nind=0;
+void initialize()
+{
+	rep(i,0,MAX)
+	{
+		rep(j,0,2)
+			trie[i][j]=-1;
+	}
+	ll int c=1;
+	rep(i,0,61)
+	{
+		tp[i]=c;
+		c=c*2;
+	}
+}
+string dTB(ll int n) 
+{  
+    string s; 
+    ll int i = 0;
+    s="";
+    rep(i,0,61)
+    {
+    	s=s+"0";
+    }
+    i=60;
+    while (n > 0) {  
+        if (n%2==1)
+        	s[i]='1';
+        else
+        	s[i]='0'; 
+        n = n / 2; 
+        i--; 
+    } 
+    return s;
+}
+void insert(string s)
+{
+	long long int s1=s.length();
+	ll int i=0;
+	while(i<s1)
+	{
+		if (trie[cind][s[i]-'0']==-1)
+		{
+			nind++;
+			trie[cind][s[i]-'0']=nind;
+			cind=nind;
+		}
+		else
+		{
+			cind=trie[cind][s[i]-'0'];
+		}
+		i++;
+	}
+}
+ll int search(string s)
+{
+	long long int s1=s.length();
+	ll int i=0;
+	ll int ans=0;
+	while(i<=60)
+	{
+		if (trie[cind]['1'-s[i]]!=-1)
+		{
+			ans=ans+tp[60-i];
+			cind=trie[cind]['1'-s[i]];
+		}
+		else
+		{
+			ans=ans+0;
+			cind=trie[cind][s[i]-'0'];
+		}
+		i++;
+	}
+	return ans;
+}
+int main()
+{
+	initialize();
+	ll int n;
+	cin >> n;
+	rep(i,0,n)
+	{
+		ll int a;
+		cin >> a;
+		string s1=dTB(a);
+		cind=0;
+		insert(s1);
+		cind=0;
+		cout << search(s1) << endl;
+	}
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>trienumber</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,28 @@
+<snippet>
+	<content><![CDATA[
+string dTB(ll int n) 
+{  
+    string s; 
+    ll int i = 0;
+    s="";
+    rep(i,0,60)
+    {
+    	s=s+"0";
+    }
+    i=59;
+    while (n > 0) {  
+        if (n%2==1)
+        	s[i]='1';
+        else
+        	s[i]='0'; 
+        n = n / 2; 
+        i--; 
+    } 
+    return s;
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>binary</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

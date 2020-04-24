@@ -1,0 +1,119 @@
+<snippet>
+	<content><![CDATA[
+#include <bits/stdc++.h>
+#include <ext/pb_ds/assoc_container.hpp>
+#include <ext/pb_ds/tree_policy.hpp>
+using namespace __gnu_pbds;
+#define ll          long long
+#define pb          push_back
+#define    endl        '\n'
+#define pii         pair<ll ll int ,ll ll int >
+#define vi          vector<ll ll int >
+#define all(a)      (a).begin(),(a).end()
+#define F           first
+#define S           second
+#define sz(x)       (ll ll int )x.sz()
+#define hell        998244353
+#define rep(i,a,b)    for(ll int  i=a;i<b;i++)
+#define repr(i,a,b)    for(ll int  i=a;i>b;i--)
+#define lbnd        lower_bound
+#define ubnd        upper_bound
+#define bs          binary_search
+#define mp          make_pair
+#define ordered_set tree<ll ll int , null_type,less<ll ll int >, rb_tree_tag,tree_order_statistics_node_update> 
+#define MAXN        100001
+#define MAXLEVEL    35
+using namespace std;
+vector <ll int> adj[MAXN];
+ll int n;
+ll int p[MAXN][MAXLEVEL];
+ll int parent[MAXN];
+ll int level[MAXN];
+void dfs(ll int v,ll int prev)
+{
+    for (auto i: adj[v])
+    {
+        if (i==prev)
+            continue;
+        parent[i]=v;
+        level[i]=level[v]+1;
+        dfs(i,v);
+    }
+}
+void preprocess()
+{
+    rep(i,1,MAXN)
+    {
+        rep(j,0,MAXLEVEL)
+        {
+            p[i][j]=-1;
+        }
+    }
+    rep(i,1,n+1)
+    {
+        p[i][0]=parent[i];
+    }
+    rep(j,1,int(log2(n))+1)
+    {
+        rep(i,1,n+1)
+        {
+            if (p[i][j-1]!=-1)  p[i][j]=p[p[i][j-1]][j-1];
+        }
+    }
+} 
+ll int findnparent(ll int u,ll int dist)
+{
+    while(dist>0)
+    {
+        int raise_by = log2(dist);
+        u = p[u][raise_by];
+        dist -= (1<<raise_by);
+    }
+    return u;
+}
+ll int lca(ll int u,ll int v)
+{
+    if (level[u]<level[v])
+        swap(u,v);
+    int dist=level[u]-level[v];
+    u=findnparent(u,dist);
+    if (u==v) return u;
+    repr(j,MAXLEVEL-1,-1)
+    {
+        if (p[u][j]!=-1 and (p[u][j]!=p[v][j]))
+        {
+            u=p[u][j];
+            v=p[v][j];
+        }
+    }
+    return parent[u];
+}
+int main()
+{
+    cin >> n;
+    rep(i,0,n-1)
+    {
+        ll int a,b;
+        cin >> a >> b;
+        adj[a].push_back(b);
+        adj[b].push_back(a);
+    }
+    level[1]=0;
+    parent[1]=1;
+    dfs(1,0);
+    preprocess();
+    ll int q;
+    cin >> q;
+    rep(i,0,q)
+    {
+        ll int a,b;
+        cin >> a >> b;
+        ll int l=lca(a,b);
+    }
+}
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>lca</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

@@ -1,0 +1,52 @@
+<snippet>
+	<content><![CDATA[
+void solve(long long int v,long long int prev=0)
+{
+	static long long int time=0;
+	low[v]=disc[v]=++time;
+	visited[v]=1;
+	all(it,adj[v])
+	{
+		long long int u=*it;
+		if (!visited[u])
+		{
+			solve(u,v);
+			low[v]=min(low[u],low[v]);
+			if (low[u]>disc[v])
+			{
+				bridge.push_back(make_pair(v,u));
+			}
+			else
+			{
+				long long int A1=gerparent(v);
+				long long int A2=gerparent(u);
+				if (A1!=A2)
+				{
+				    if (A1>A2)
+				    {
+				        parent[A2]=A1;
+				    }
+				    else
+				    {
+				        parent[A1]=A2;
+				    }
+				}
+			}
+		}
+		else if (u!=prev)
+		{
+			low[v]=min(low[v],disc[u]);
+		}
+		else
+		{
+			continue;
+		}
+	}
+}
+
+]]></content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+<tabTrigger>bridge</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>

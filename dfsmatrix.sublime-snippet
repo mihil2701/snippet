@@ -1,0 +1,34 @@
+<snippet>
+	<content>
+long long int dfs(long long int a1,long long int b1,long long int i,long long int j)
+{
+	vis[i][j]=1;
+	long long int count1=1;
+	if (vis[i+1][j]==0 && (mat[i+1][j]==a1 || mat[i+1][j]==b1))
+	{
+		long long int count2=dfs(a1,b1,i+1,j);
+		count1=count1+count2;
+	}
+	if (vis[i-1][j]==0 && (mat[i-1][j]==a1 || mat[i-1][j]==b1))
+	{
+		long long int count2=dfs(a1,b1,i-1,j);
+		count1=count1+count2;
+	}
+	if (vis[i][j+1]==0 && (mat[i][j+1]==a1 || mat[i][j+1]==b1))
+	{
+		long long int count2=dfs(a1,b1,i,j+1);
+		count1=count1+count2;
+	}
+	if (vis[i][j-1]==0 && (mat[i][j-1]==a1 || mat[i][j-1]==b1))
+	{
+		long long int count2=dfs(a1,b1,i,j-1);
+		count1=count1+count2;
+	}
+	return count1;
+}
+	</content>
+	<!-- Optional: Set a tabTrigger to define how to trigger the snippet -->
+	<tabTrigger>dfsmatrix</tabTrigger>
+	<!-- Optional: Set a scope to limit where the snippet will trigger -->
+	<!-- <scope>source.python</scope> -->
+</snippet>
